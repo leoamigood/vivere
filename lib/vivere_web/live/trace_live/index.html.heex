@@ -1,0 +1,20 @@
+<h1>Listing Traces</h1>
+
+<table>
+  <thead>
+    <tr>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="traces">
+    <%= for trace <- @traces do %>
+      <tr id={"trace-#{trace.id}"}>
+
+        <td>
+          <span><%= live_redirect "#{trace.name}", to: Routes.trace_show_path(@socket, :show, trace) %></span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
