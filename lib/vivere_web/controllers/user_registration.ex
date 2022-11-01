@@ -10,9 +10,8 @@ defmodule VivereWeb.Controllers.UserRegistration do
 
   @spec register(Conn.t(), UserRegistration.t()) :: Conn.t()
   def register(conn, user_registration_command) do
-    with {:ok, _user, conn} <- conn |> Pow.Plug.create_user(user_registration_command) do
-      json(conn, %{token: conn.private[:api_access_token]})
-    else
+    case Pow.Plug.create_user(conn, user_registration_command) do
+      {:ok, _user, conn} -> json(conn, %{token: conn.private[:api_access_token]})
       {:error, changeset, conn} ->
         errors = Changeset.traverse_errors(changeset, &ErrorHelpers.translate_error/1)
         conn

@@ -8,9 +8,8 @@ defmodule VivereWeb.Controllers.UserLogin do
 
   @spec login(Conn.t(), UserPassLogin.t()) :: Conn.t()
   def login(conn, user_pass_login) do
-    with {:ok, conn} <- conn |> Pow.Plug.authenticate_user(user_pass_login) do
-      json(conn, %{token: conn.private[:api_access_token]})
-    else
+    case Pow.Plug.authenticate_user(conn, user_pass_login) do
+      {:ok, conn} -> json(conn, %{token: conn.private[:api_access_token]})
       {:error, conn} ->
         conn
         |> put_status(401)
